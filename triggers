@@ -1,0 +1,54 @@
+ROLLNO	SNAME	AGE	COURSE
+11	jhansi	20	BSC
+12	suji	18	BCOM
+13	navya	17	BCA
+14	madhavi	20	BCA
+15	ravi	29	BBA
+
+CREATE OR REPLACE TRIGGER tn
+BEFORE
+INSERT OR UPDATE ON student
+FOR EACH ROW
+BEGIN
+	IF :new.Age>30 THEN
+		raise_application_error(-20001, 'Age should not be greater than 30');
+	END IF;
+END;
+
+Trigger created.
+
+
+INSERT into STUDENT values(16, 'likhi', 32, 'BCOM');
+
+Age should not be greater than 30
+
+INSERT into STUDENT values(17, 'cherry', 22, 'BCOM');
+
+sql> select *from  student;
+
+ROLLNO	SNAME	AGE	COURSE
+11	jhansi	20	BSC
+12	suji	18	BCOM
+13	navya	17	BCA
+14	madhavi	20	BCA
+15	ravi	29	BBA
+17      cherry  22      BCOM
+
+UPDATE STUDENT set age=31 where ROLLNO=12; 
+
+Age should not be greater than 30
+
+UPDATE STUDENT set age=23 where ROLLNO=12; 
+
+1 row updated.
+
+sql> select *from student;
+
+
+ROLLNO	SNAME	AGE	COURSE
+11	jhansi	20	BSC
+12	suji	23	BCOM
+13	navya	17	BCA
+14	madhavi	20	BCA
+15	ravi	29	BBA
+17      cherry  22      BCOM
